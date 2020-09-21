@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.1.102:3306/crsdb?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: crb
+    password: crb
+    
+    initialSize: 20
+    minIdle: 10
+    maxActive: 100
+    testWhileIdle: true #建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+    testOnBorrow: false
+    testOnReturn: false
+    validationQuery: select 1 from dual
+    timeBetweenEvictionRunsMillis: 60000  
+    poolPreparedStatements: false  #是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+    filters: stat,wall  #监控统计用的filter:stat；防御sql注入的filter:wall。
+    maxPoolPreparedStatementPerConnectionSize: 20 #poolPreparedStatements设置false时应该没用。
+    useGlobalDataSourceStat: true # 合并多个DruidDataSource的监控数据。
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000  #慢sql记录，慢sql标准。
+
+mybatis:
+  config-location: classpath:mybatis.xml
+  mapper-locations: classpath:mapper/**/*.xml

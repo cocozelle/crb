@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "config",
+  "type": "java.lang.Mapping",
+  "description": "自定义配置"
+}]}

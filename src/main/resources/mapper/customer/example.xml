@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cbhb.crb.mapper.customer.ExampleMapper">
+
+	<!-- 获取我的客户 -->
+	<select id="getMyCustomer" parameterType="Map" resultType="Map">
+		SELECT 
+		  cust_no 			"customerId",
+		  cn_name			"name",
+		  cent_no			"centNo",
+		  wealth_asset_aum	"wealthAssetAum",
+		  manager_id		"managerId",
+		  manager_org_id 	"managerOrgId"
+		FROM
+		  t_psn_wealth_cust_info 
+		<where>
+			<if test="customerId != null and customerId != ''">
+		  		AND cust_no LIKE CONCAT(#{customerId}, '%')
+		  	</if>
+		  	<if test="name != null and name != ''">
+				AND cn_name LIKE CONCAT('%', #{name}, '%')
+	   	  	</if>
+		  	<if test="centNo != null and centNo != ''">
+				AND cent_no LIKE CONCAT(#{centNo}, '%') 
+		  	</if>
+		  	<if test="wealthAssetAumMin != null and wealthAssetAumMin != ''">
+		  	<![CDATA[
+	  			AND wealth_asset_aum >= #{wealthAssetAumMin}
+	  	  	]]>
+		  	</if>
+		  	<if test="wealthAsssetAumMax != null and wealthAsssetAumMax != ''">
+		  	<![CDATA[
+				AND wealth_asset_aum <= #{wealthAsssetAumMax}
+	  	  	]]>
+	  	  	</if>
+	  	  	<if test="userId != null and userId != ''">
+	  	  		and manager_id = #{userId} 
+		  	</if>
+		</where>
+	</select>
+	
+	<!-- 批量插入 -->
+	<update id="batchAdd" parameterType="Map" flushCache="true">
+		insert into batch_test(id, job_number, name) values(#{id}, #{jobNumber}, #{name})
+	</update>
+</mapper>

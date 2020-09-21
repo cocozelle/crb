@@ -1,0 +1,33 @@
+server:
+  servlet:
+    context-path: /crb
+spring: 
+  profiles:
+    include: datasource
+  session:    store-type: redis
+  redis: 
+    jedis:      pool:        max-idle: 20
+        max-active: 500
+    password: crn    sentinel:      master: myRedis
+      nodes:      - 192.168.1.102:26379
+      - 192.168.1.103:26379
+      - 192.168.1.104:26379        
+
+config:
+  cors:
+    allowed-origin: 
+      http://192.168.26.1:8080, 
+      http://192.168.1.102:8080, 
+      http://192.168.1.103:8080
+--- 
+spring:
+  profiles: 8080 
+    
+server:
+  port: 8080
+---
+spring:
+  profiles: 9080  
+    
+server:
+  port: 9080

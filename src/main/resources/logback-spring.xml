@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="60 minutes" debug="false">	
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">       
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="com.cbhb.crb.config.LogFilterConfig"></filter>
+        
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+        
+        <file>/Work/Current/log/crb.log</file>
+        
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>/Work/Current/log/crb.log.%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <totalSizeCap>2GB</totalSizeCap>
+            <maxHistory>8</maxHistory>
+        </rollingPolicy>
+    </appender>
+    
+    <appender name="ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">        
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+        
+        <file>/Work/Current/log/crb-all.log</file>
+                
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>/Work/Current/log/crb-all.log.%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <totalSizeCap>2GB</totalSizeCap>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+    </appender>
+    
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+        <appender-ref ref="ALL" />
+    </root>
+     
+    <logger name="com.cbhb.crb" level="DEBUG" />
+</configuration>
