@@ -6,7 +6,9 @@ import java.io.Serializable;
 public class LoginUser implements Serializable
 {
 	private String userId;
+	private String password;
 	private String orgId;
+	private String userName;
 	
 	public String getUserId()
 	{
@@ -17,6 +19,24 @@ public class LoginUser implements Serializable
 		this.userId = userId;
 	}
 	
+	public String getPassword()
+	{
+		return password;
+	}
+	public void setPassword(String password)
+	{
+		this.password = password;
+	}
+	
+	public String getUserName()
+	{
+		return userName;
+	}
+	public void setUserName(String userName)
+	{
+		this.userName = userName;
+	}
+	
 	public String getOrgId()
 	{
 		return orgId;
@@ -25,10 +45,10 @@ public class LoginUser implements Serializable
 	{
 		this.orgId = orgId;
 	}
-	
 	@Override
 	public String toString()
 	{
-		return "LoginUser [userId=" + userId + ", orgId=" + orgId + "]";
+		return "LoginUser [userId=" + userId + ", password=" + password + 
+				", orgId=" + orgId + ", userName=" + userName + "]";
 	}
 }
