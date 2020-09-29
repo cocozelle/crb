@@ -53,45 +53,4 @@ public class ExampleController extends BaseController
 		
 		return MapResult;
 	}
-	
-	@RequestMapping(value="/session", method=RequestMethod.POST)
-	public LoginUser saveSession(HttpSession session, 
-			@RequestBody LoginUser loginUser) throws Exception
-	{	
-		try
-		{
-			session.setAttribute("loginUser", loginUser);
-		}
-		catch(Exception e)
-		{
-			String strMessage = "POST方式/session，"
-					+ "保存用户报错：" + e.toString();
-			
-			logger.error(strMessage);
-			throw new Exception(strMessage);
-		}
-		
-		return loginUser;
-	}
-	
-	@RequestMapping(value="/session", method=RequestMethod.GET)
-	public String showSession(HttpSession session) throws Exception
-	{
-		LoginUser loginUser = null;
-		
-		try
-		{
-			loginUser = getUser(session);
-		}
-		catch(Exception e)
-		{
-			String strMessage = "GET方式/session，"
-					+ "获取用户报错：" + e.toString();
-			
-			logger.error(strMessage);
-			throw new Exception(strMessage);
-		}
-		
-		return "Session.loginUser: " + loginUser;
-	}
 }

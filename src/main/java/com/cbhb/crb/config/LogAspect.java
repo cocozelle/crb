@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,7 +57,7 @@ public class LogAspect
 		StringBuilder sbArgs = null;
 		Transactional annotationTransaction = null;
 		String strReturnValue = null;		
-//		String strUserName = null;
+		String strUserName = null;
 		
 		/* 获取类名 */
 		try
@@ -137,10 +138,6 @@ public class LogAspect
 				sbArgs.setLength(Constant.DEF_ARGS_LENGTH_IN_LOG);
 				sbArgs.append("....");
 			}
-			
-			HttpServletRequest request=((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-			LoginUser loginUser = (LoginUser)request.getSession().getAttribute("loginUser");
-			System.err.println("*******" + loginUser + "************");
 		}
 		catch(Exception e)
 		{
@@ -173,18 +170,19 @@ public class LogAspect
 			annotationTransaction = null;
 		}
 		
-//		try
-//		{
-//			SecurityContext sc = SecurityContextHolder.getContext();
-//			Authentication au = sc.getAuthentication();
-//			User user = (User)au.getPrincipal();
-//			strUserName = user.getUsername();
-//		}
-//		catch(Exception e)
-//		{
-//			strUserName = null;
-//		}
-//		
+		try
+		{
+			RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+			HttpServletRequest request = ((ServletRequestAttributes)ra).getRequest();			
+			LoginUser loginUser = (LoginUser)request.getSession().getAttribute("loginUser");
+			
+			strUserName = loginUser.getUserName() + "[" + loginUser.getUserId() + "]";
+		}
+		catch(Exception e)
+		{
+			strUserName = null;
+		}
+		
 		String strMessage = strClass + "." + 
 				strMethod + "(" + sbArgs + ")开始执行。";
 
@@ -193,10 +191,10 @@ public class LogAspect
 			strMessage += "该方法执行于事务中。";
 		}
 		
-//		if(strUserName != null)
-//		{
-//			strMessage += "对应用户：" + strUserName;
-//		}
+		if(strUserName != null)
+		{
+			strMessage += "对应用户：" + strUserName;
+		}
 		
 		logger.debug(strMessage);
 		
@@ -221,10 +219,10 @@ public class LogAspect
 			strMessage += "事务结束。";
 		}
 		
-//		if(strUserName != null)
-//		{
-//			strMessage += "对应用户：" + strUserName;
-//		}
+		if(strUserName != null)
+		{
+			strMessage += "对应用户：" + strUserName;
+		}
 		
 		logger.debug(strMessage);
 		
