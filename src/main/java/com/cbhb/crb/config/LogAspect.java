@@ -16,8 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cbhb.crb.bean.LoginUser;
 import com.cbhb.crb.util.Constant;
 import com.cbhb.crb.util.Converter;
 
@@ -135,6 +138,9 @@ public class LogAspect
 				sbArgs.append("....");
 			}
 			
+			HttpServletRequest request=((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+			LoginUser loginUser = (LoginUser)request.getSession().getAttribute("loginUser");
+			System.err.println("*******" + loginUser + "************");
 		}
 		catch(Exception e)
 		{

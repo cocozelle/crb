@@ -9,6 +9,7 @@ public class LoginUser implements Serializable
 	private String password;
 	private String orgId;
 	private String userName;
+	private String roleId;
 	
 	public String getUserId()
 	{
@@ -45,10 +46,20 @@ public class LoginUser implements Serializable
 	{
 		this.orgId = orgId;
 	}
+	
+	public String getRoleId()
+	{
+		return roleId;
+	}
+	public void setRoleId(String roleId)
+	{
+		this.roleId = roleId;
+	}
+	
 	@Override
 	public String toString()
 	{
 		return "LoginUser [userId=" + userId + ", password=" + password + 
-				", orgId=" + orgId + ", userName=" + userName + "]";
+				", orgId=" + orgId + ", userName=" + userName + ", roleId=" + roleId + "]";
 	}
 }
