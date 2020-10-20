@@ -1,10 +1,8 @@
 package com.cbhb.crb.controller.customer;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cbhb.crb.bean.LoginUser;
+import com.cbhb.crb.bean.Result;
 import com.cbhb.crb.controller.BaseController;
 import com.cbhb.crb.service.customer.ExampleService;
+import com.cbhb.crb.util.Constant;
 
 @RestController
 public class ExampleController extends BaseController
@@ -22,24 +22,26 @@ public class ExampleController extends BaseController
 	private ExampleService exampleService;
 	
 	@RequestMapping(value="/my-customer", method=RequestMethod.POST)
-	public Map<String, Object> getMyCustomer(HttpSession session,
-			@RequestBody Map<String, String> mapParam)throws Exception
+	public Result getMyCustomer(@RequestBody Map<String, String> mapParam)throws Exception
 	{		
-		Map<String, Object> MapResult = new HashMap<String, Object>();
+		Result result = new Result();
 		
 		try
 		{
-			LoginUser loginUser = getUser(session);
+			LoginUser loginUser = getUser();
 			
 			if(loginUser == null)
 			{
-				logger.info("未存入用户信息而试图访问。");
-				MapResult.put("error", "请先把用户信息存入Session。");
+				result.setCode(Constant.ResultCode.NOT_LOGIN);
+				result.setData("用户未登录，而试图访问。");
 			}
 			else
 			{
-				MapResult = exampleService.getMyCustomer(
+				Map<String, Object> MapResult = exampleService.getMyCustomer(
 						mapParam, loginUser);
+				
+				result.setCode(Constant.ResultCode.SUCCESS);
+				result.setData(MapResult);
 			}
 		}
 		catch(Exception e)
@@ -51,6 +53,6 @@ public class ExampleController extends BaseController
 			throw new Exception(strMessage);
 		}
 		
-		return MapResult;
+		return result;
 	}
 }

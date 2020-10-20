@@ -13,6 +13,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cbhb.crb.bean.LoginUser;
@@ -29,9 +32,21 @@ public class BaseService
 	@Resource(name="redisTemplate")
 	protected RedisTemplate<String, Object> redisTemplate;
 	
-	protected LoginUser getUser(HttpSession session)
+	protected LoginUser getUser()
 	{
-		LoginUser loginUser = (LoginUser)session.getAttribute("loginUser");
+		LoginUser loginUser = null;
+		
+		try
+		{
+			RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+			HttpServletRequest request = ((ServletRequestAttributes)ra).getRequest();			
+			loginUser = (LoginUser)request.getSession().getAttribute("loginUser");
+		}
+		catch(Exception e)
+		{
+			logger.error("获取当前用户出错：" + e.toString());
+			loginUser = new LoginUser();
+		}
 		
 		return loginUser;
 	}

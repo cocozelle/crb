@@ -19,4 +19,13 @@ public class Constant
 	public static final String DEF_REDIS_KEY_USER = "USER";
 	
 	public static final String DEF_REDIS_KEY_ORG = "ORG";
+	
+	public static final class ResultCode
+	{
+		public static final String NOT_LOGIN = "-1";
+		
+		public static final String SUCCESS = "0";
+		
+		public static final String ERROR_PASSWORD = "1";
+	}
 }

@@ -11,6 +11,7 @@ import com.cbhb.crb.bean.LoginUser;
 import com.cbhb.crb.bean.Result;
 import com.cbhb.crb.controller.BaseController;
 import com.cbhb.crb.service.user.UserService;
+import com.cbhb.crb.util.Constant;
 
 @RestController
 public class UserController extends BaseController
@@ -30,14 +31,14 @@ public class UserController extends BaseController
 			
 			if(loginUser == null)
 			{
-				result.setCode("1");
+				result.setCode(Constant.ResultCode.ERROR_PASSWORD);
 				result.setData("错误的用户名或密码");
 			}
 			else 
 			{
 				session.setAttribute("loginUser", loginUser);
 				
-				result.setCode("0");
+				result.setCode(Constant.ResultCode.SUCCESS);
 				result.setData(loginUser);
 			}
 		} 
